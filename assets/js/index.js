@@ -8,15 +8,17 @@ const imagesDB = [
 ];
 const slider = new Slider(imagesDB);
 
+const clickMe = document.getElementById('clickMe')
 const image = document.querySelector('.slide>img');
 const [prevBtn, nextBtn] = document.querySelectorAll('.slider-container>button');
 
-function updateView(){
+function updateView() {
     image.setAttribute('src', slider.currentSlide);
 }
+
 updateView();
 
-const bthSliderHandler = (direction = 'next') => () =>{
+const bthSliderHandler = (direction = 'next') => () => {
     slider.currentIndex = slider[direction === 'next' ? 'nextIndex' : 'prevIndex'];
     updateView();
 }
@@ -24,6 +26,17 @@ const bthSliderHandler = (direction = 'next') => () =>{
 nextBtn.addEventListener('click', bthSliderHandler('next'));
 prevBtn.addEventListener('click', bthSliderHandler('prev'));
 
-image.addEventListener('wheel', (e)=>{
-    e.deltaY>0 ? bthSliderHandler('next')():bthSliderHandler('prev')();
+image.addEventListener('wheel', (e) => {
+    e.deltaY > 0 ? bthSliderHandler('next')() : bthSliderHandler('prev')();
+})
+
+let toggled = 0
+clickMe.addEventListener('click', () => {
+    if (toggled) {
+        bthSliderHandler('prev')()
+    } else {
+        bthSliderHandler()()
+    }
+    toggled = !toggled;
+    updateView();
 })
